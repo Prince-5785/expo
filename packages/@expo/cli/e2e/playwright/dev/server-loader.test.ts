@@ -203,7 +203,8 @@ for (const outputMode of outputModes) {
       const statuses = await trackLoaderNetworkStatuses(page, '/_expo/loaders/loaders/response');
       const responseUrl = new URL('/loaders/response', expoStart.url.href).toString();
 
-      await gotoHydrated(page, responseUrl);
+      await page.goto(responseUrl);
+      await page.getByTestId('loader-mounted').waitFor({ state: 'attached' });
       expect(statuses).toEqual([]);
 
       // The first revisit hits the network — the hydration seed never primes the HTTP cache.
